@@ -10,12 +10,12 @@ import TodoFooter from "./components/TodoFooter";
 class App extends Component {
   state = {
     list: [
-      { id: 1, name: "吃饭", done: false },
-      { id: 2, name: "睡觉", done: true },
-      { id: 3, name: "打豆豆", done: false },
+      // { id: 1, name: "吃饭", done: false },
+      // { id: 2, name: "睡觉", done: true },
+      // { id: 3, name: "打豆豆", done: false },
     ],
     // 有三个值 all active completed
-    type: "active",
+    type: "all",
   };
   render() {
     const { list, type } = this.state;
@@ -110,6 +110,16 @@ class App extends Component {
         }
       })
     })
+  }
+  // 组件一创建渲染时拿到数据给list
+  componentDidMount () {
+    this.setState({
+      list: JSON.parse(localStorage.getItem('todos')) || []
+    })
+  }
+  // 本地存储
+  componentDidUpdate() {
+    localStorage.setItem('todos', JSON.stringify(this.state.list))
   }
 }
 ReactDOM.render(<App />, document.getElementById("root"));
