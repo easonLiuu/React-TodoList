@@ -10,23 +10,17 @@ import React, { useState, useEffect } from "react";
 export const Context = React.createContext();
 const { Provider } = Context;
 
-// const todos = [
-//   { id: 1, name: "吃饭", done: false },
-//   { id: 2, name: "睡觉", done: true },
-//   { id: 3, name: "打豆豆", done: false },
-// ];
-// 只有第一次打开页面取
-const App = () => {
+function useTodos() {
   // 惰性初始
   const [list, setList] = useState(() => {
-    console.log('111')
-    return JSON.parse(localStorage.getItem('todos')) || []
+    // console.log('111')
+    return JSON.parse(localStorage.getItem("todos")) || [];
   });
 
   // 保存到本地 属于副作用
   useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(list))
-  }, [list])
+    localStorage.setItem("todos", JSON.stringify(list));
+  }, [list]);
 
   // 添加任务
   const addTodo = (name) => {
@@ -68,21 +62,41 @@ const App = () => {
         if (item.id === id) {
           return {
             ...item,
-            name
+            name,
           };
         } else {
           return item;
         }
       })
     );
-  }
+  };
+
+  return {
+    list,
+    addTodo,
+    delTodo,
+    changeDone,
+    changeName,
+  };
+}
+
+// const todos = [
+//   { id: 1, name: "吃饭", done: false },
+//   { id: 2, name: "睡觉", done: true },
+//   { id: 3, name: "打豆豆", done: false },
+// ];
+// 只有第一次打开页面取
+const App = () => {
+  // all active completed
+  const [type, setType] = useState("all");
+  const { list, addTodo, delTodo, changeDone, changeName } = useTodos();
 
   return (
     <Provider value={{ delTodo, changeDone, changeName }}>
       <section className="todoapp">
         <TodoHeader addTodo={addTodo}></TodoHeader>
-        <TodoMain list={list}></TodoMain>
-        <TodoFooter></TodoFooter>
+        <TodoMain list={list} type={type}></TodoMain>
+        <TodoFooter list={list} type={type} setType={setType}></TodoFooter>
       </section>
     </Provider>
   );
