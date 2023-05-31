@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.2.4",
     "mobx": "^6.9.0",
     "mobx-react": "^7.6.0",
+    "nanoid": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
